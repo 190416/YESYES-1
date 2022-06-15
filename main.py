@@ -2,7 +2,7 @@ from flask import Flask, render_template, request
 import sqlite3 as sql
 import requests
 import json
-import json2table
+
 
 
 app = Flask(__name__)
@@ -24,11 +24,7 @@ def home():
 
 @app.route('/jsontable')
 def jsonlist():
-  build_direction = "LEFT_TO_RIGHT"
-  table_attributes = {"style": "width:100%"}
-  return json2table.convert(parse_json, 
-                         build_direction=build_direction, 
-                         table_attributes=table_attributes)
+  return render_template("jsonlist.html", json=parse_json)
 
 
 @app.route('/enternew')

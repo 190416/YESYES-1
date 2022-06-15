@@ -1,24 +1,69 @@
 <!doctype html>
+
+
 <html>
+  <head>
+    <link rel="stylesheet" href="./charts.min.css">
+    <link rel="stylesheet" href="./jsonlist.css">
+  </head>
    <body>
-      <table border = 1>
-         <thead>
-            <td>Name</td>
-            <td>Address>/td<
-            <td>city</td>
-            <td>Pincode</td>
-         </thead>
-         
-         {% for row in rows %}
+
+    <p id="log"></p>
+     
+      <table class="charts-css bar">
+
+         {% for row in json["more"] %}
             <tr>
                <td>{{row["name"]}}</td>
-               <td>{{row["addr"]}}</td>
-               <td> {{ row["city"]}}</td>
-               <td>{{row['pin']}}</td>	
+               <td>{{row["value"]}}</td>
             </tr>
          {% endfor %}
       </table>
-      
+
+     <canvas id="myChart" style="width:100%;max-width:700px"></canvas>
+
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+</body>
+
+<body>
+<canvas id="myChart" style="width:100%;max-width:700px"></canvas>
+
+<script>
+var yValues = [];
+{% for row in json["more"] %}
+  var tmp = {{row["value"]}};
+  yValues.push(tmp);
+{% endfor %}
+var xValues = [1,2,3,4,5,6,7,8,9,10,11,12];
+
+  
+document.getElementById("log").innerHTML = yValues + " a " + xValues;
+
+  
+
+new Chart("myChart", {
+  type: "line",
+  data: {
+    labels: xValues,
+    datasets: [{
+      fill: false,
+      lineTension: 0,
+      backgroundColor: "rgba(0,0,255,1.0)",
+      borderColor: "rgba(0,0,255,0.1)",
+      data: yValues
+    }]
+  },
+  options: {
+    legend: {display: false},
+    scales: {
+      yAxes: [{ticks: {min: 0, max:50}}],
+    }
+  }
+});       
+</script>
+
+</body>
+     
       <a href = "/">Go back to home page</a>
-   </body>
 </html>
