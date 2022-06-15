@@ -3,44 +3,37 @@
 
 <html>
   <head>
-    <link rel="stylesheet" href="./charts.min.css">
-    <link rel="stylesheet" href="./jsonlist.css">
+    <link href="{{ url_for('static', filename = 'jsonlist.css') }}" rel="stylesheet" type="text/css" />  
   </head>
-   <body>
+   <body class="result">
+      <div class="Titlebar">
+        <h1>Sensor results</h1>
+      </div>
 
-    <p id="log"></p>
-     
-      <table class="charts-css bar">
-
-         {% for row in json["more"] %}
-            <tr>
-               <td>{{row["name"]}}</td>
-               <td>{{row["value"]}}</td>
-            </tr>
-         {% endfor %}
-      </table>
-
-     <canvas id="myChart" style="width:100%;max-width:700px"></canvas>
-
+     <div class="chart">
+     <!-- Chart -->
+     <canvas id="myChart" style="width:99vw;"></canvas>
+     </div>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 </body>
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 
-<body>
-<canvas id="myChart" style="width:100%;max-width:700px"></canvas>
-
+  
 <script>
+  
 var yValues = [];
+var xValues = [];
+var am = 1;
 {% for row in json["more"] %}
   var tmp = {{row["value"]}};
   yValues.push(tmp);
+  xValues.push(am);
+  am++;
 {% endfor %}
-var xValues = [1,2,3,4,5,6,7,8,9,10,11,12];
 
-  
-document.getElementById("log").innerHTML = yValues + " a " + xValues;
-
-  
+var highest = yValues.max;
+var lowest = yValues.min;
 
 new Chart("myChart", {
   type: "line",
@@ -49,21 +42,33 @@ new Chart("myChart", {
     datasets: [{
       fill: false,
       lineTension: 0,
-      backgroundColor: "rgba(0,0,255,1.0)",
-      borderColor: "rgba(0,0,255,0.1)",
+      backgroundColor: "rgba(255,255,255,1.0)",
+      borderColor: "rgba(255,255,255,0.7)",
       data: yValues
     }]
   },
   options: {
     legend: {display: false},
     scales: {
-      yAxes: [{ticks: {min: 0, max:50}}],
+      yAxes: [{
+        ticks: {
+          min: 0, 
+          max:highest,
+          fontColor: "rgba(255,255,255,1.0)",
+          fontSize: 18
+        }
+      }],
+      xAxes: [{
+        ticks: {
+          fontColor: "rgba(255,255,255,1.0)",
+          fontSize: 18
+        }
+      }],
     }
   }
 });       
 </script>
 
-</body>
      
       <a href = "/">Go back to home page</a>
 </html>
